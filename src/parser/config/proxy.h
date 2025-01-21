@@ -15,6 +15,7 @@ enum class ProxyType
     Shadowsocks,
     ShadowsocksR,
     VMess,
+    VLESS,
     Trojan,
     Snell,
     HTTP,
@@ -51,6 +52,8 @@ inline String getProxyTypeName(ProxyType type)
         return "Hysteria";
     case ProxyType::Hysteria2:
         return "Hysteria2";
+    case ProxyType::VLESS:
+        return "Vless";
     default:
         return "Unknown";
     }
@@ -89,6 +92,7 @@ struct Proxy
     String QUICSecret;
 
     tribool UDP;
+    tribool XUDP;
     tribool TCPFastOpen;
     tribool AllowInsecure;
     tribool TLS13;
@@ -127,6 +131,18 @@ struct Proxy
     StringArray Alpn;
 
     uint32_t CWND = 0;
+
+    String GRPCServiceName;
+    String GRPCMode;
+    String ShortId;
+    String Flow;
+    tribool DisableSni;
+    tribool ReduceRtt;
+    String UdpRelayMode = "native";
+    uint16_t RequestTimeout = 15000;
+    String Token;
+    std::vector<String> AlpnList;
+    String PacketEncoding;
 };
 
 #define SS_DEFAULT_GROUP "SSProvider"
@@ -139,5 +155,6 @@ struct Proxy
 #define WG_DEFAULT_GROUP "WireGuardProvider"
 #define HYSTERIA_DEFAULT_GROUP "HysteriaProvider"
 #define HYSTERIA2_DEFAULT_GROUP "Hysteria2Provider"
+#define XRAY_DEFAULT_GROUP "XRayProvider"
 
 #endif // PROXY_H_INCLUDED
